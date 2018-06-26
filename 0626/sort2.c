@@ -58,9 +58,9 @@ void bsort(void *a, int n, int size)
 #endif
 
 // cmp -> strcmp
-//  왼쪽이 클때 : 0 보다 작은 값 
+//  왼쪽이 클때 : 0 보다 큰값   : 1
 //  같을 때     : 0
-// 오른쪽이 클때: 0 보다 큰 값
+// 오른쪽이 클때: 0 보다 작은 값: -1
 void bsort(void *a, int n, int size, int (*cmp)(const void *, const void *))
 {
 	int i, j;
