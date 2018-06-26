@@ -1,3 +1,4 @@
+#include <stdio.h>
 // 아래 코드는 문제가 있습니다.
 //  어떤 문제가 있을까요?
 int search(int* ar, int len, int target){
@@ -19,5 +20,11 @@ int search(int* ar, int len, int target){
 		}
 	}
 	return -1;
+}
+
+int main()
+{
+	char c = 100 * 2; 
+	printf("%d\n", c);
 }
 
