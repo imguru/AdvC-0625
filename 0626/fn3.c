@@ -1,3 +1,22 @@
+// Effective Series
+//  C++
+//  - Effective C++
+//  - More Effective C++
+//  - Modern Effective C++
+//  - Modern C++ Design
+//  - Exceptional C++
+//  - More Exceptional C++
+//  - Exception C++ Style
+
+// C, C++, Java, Kotlin, Swift, go
+//  => 정적 언어
+
+// Python, Javascript
+//  => 동적 언어
+
+// Shell, Make
+//  => Script
+
 // Modern Programming Language
 //  => OOP + FP
 //           (고계 함수 - High-Order Function)
@@ -15,13 +34,12 @@ int bbb(int data)
 	return data;
 }
 
-aaa()
+int (*aaa(void))(void)
 {
 	return bbb;
 }
 
-
-int main()
+int main(void)
 {
 	aaa()(1);
 }
