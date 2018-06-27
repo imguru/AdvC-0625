@@ -13,7 +13,27 @@ typedef struct node
 	struct node *prev;
 } NODE;
 
+// 이중 연결리스트에서 삽입에 대한 동작은 prev와 next의 정보만 있다면
+// 일반화가 가능하다.
+void __insert_data(NODE* prev, NODE* next, NODE* temp)
+{
+	temp->next = next;
+	temp->prev = prev;
+	prev->next = temp;
+	next->prev = temp;
+}
 
+void insert_back(NODE* s, NODE* temp)
+{
+	__insert_data(s, s->next, temp);
+}
+
+void insert_front(NODE* s, NODE* temp)
+{
+	__insert_data(s->prev, s, temp);
+}
+
+#if 0
 // s의 노드 뒤에 삽입하는 함수
 void insert_back(NODE* s, NODE* temp)
 {
@@ -24,12 +44,16 @@ void insert_back(NODE* s, NODE* temp)
 	temp->next->prev = temp;
 }
 
+// 작성해주세요
 void insert_front(NODE* s, NODE* temp)
 {
+	temp->next = s;
+	s->prev->next = temp;
 
+	temp->prev = s->prev;
+	s->prev = temp;
 }
-
-
+#endif
 
 void display(NODE* head)
 {
@@ -37,11 +61,13 @@ void display(NODE* head)
 	system("clear");
 	printf("[head]");
 
+#if 0
 	for (temp = head->prev; temp != head ; temp = temp->prev)
 	{
 		printf("-> [%d]", temp->data);
 	}
-#if 0
+#endif
+#if 1
 	for (temp = head->next; temp != head ; temp = temp->next)
 	{
 		printf("-> [%d]", temp->data);
