@@ -8,16 +8,14 @@ typedef struct node
 	struct node *next;
 } NODE;
 
-NODE head;
-
-
-// 연결리스트에서 가장 많이 발생하는 문제
-//  => 잘못된 메모리 참조(Null 참조)
-//  => tail 이라는 더미 노드를 통해서 끝에 도달하더라도 널 참조의
-//     가능성을 없애자.
-
-
+NODE head = { 0, &head };
 // s의 노드 뒤에 새로운 노드를 삽입한다.
+
+// 아래와 같이 함수를 만들때 문제점
+// 1. 삽입 로직의 성능이 저하된다.
+// 2. 노드의 메모리는 사용자가 원하는 영역에 할당될 수 있어야 한다.
+
+// => 노드 할당에 대한 로직과 삽입에 대한 로직은 반드시 분리되어야 한다.
 void insert_node(NODE* s, int data)
 {
 	NODE* temp = malloc(sizeof(NODE));
@@ -33,8 +31,8 @@ void display()
 	system("clear");
 	printf("[head]");
 
-	// for (temp = head.next; temp != NULL ; temp = temp->next)
-	for (temp = head.next;  ; temp = temp->next)
+	// for (temp = head.next; temp != &head ; temp = temp->next)
+	for (temp = head.next; ; temp = temp->next)
 	{
 		printf("-> [%d]", temp->data);
 	}
