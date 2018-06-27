@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// struct list_head
+// task_struct
 typedef struct node
 {
 	struct node *next;
