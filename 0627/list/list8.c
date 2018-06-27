@@ -15,7 +15,7 @@ typedef struct node
 
 
 // s의 노드 뒤에 삽입하는 함수
-void insert_node(NODE* s, NODE* temp)
+void insert_back(NODE* s, NODE* temp)
 {
 	temp->next = s->next;
 	s->next = temp;
@@ -23,6 +23,13 @@ void insert_node(NODE* s, NODE* temp)
 	temp->prev = s;
 	temp->next->prev = temp;
 }
+
+void insert_front(NODE* s, NODE* temp)
+{
+
+}
+
+
 
 void display(NODE* head)
 {
@@ -55,7 +62,7 @@ int main()
 	for (i = 0; i < 7; ++i)
 	{
 		nodes[i].data = i + 1;
-		insert_node(&head, nodes + i);
+		insert_back(&head, nodes + i);
 		display(&head);
 	}
 
