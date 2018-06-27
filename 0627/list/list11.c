@@ -26,12 +26,12 @@ void __insert_data(NODE* prev, NODE* next, NODE* temp)
 	next->prev = temp;
 }
 
-void insert_back(NODE* s, NODE* temp)
+void insert_front(NODE* s, NODE* temp)
 {
 	__insert_data(s, s->next, temp);
 }
 
-void insert_front(NODE* s, NODE* temp)
+void insert_back(NODE* s, NODE* temp)
 {
 	__insert_data(s->prev, s, temp);
 }
