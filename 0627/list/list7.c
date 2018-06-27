@@ -1,16 +1,31 @@
-// C언어에서 연결리스트를 구현하는 방법
 #include <stdio.h>
 #include <stdlib.h>
 
+// 단일 연결리스트에서 역순 검색을 할 수 있는가?
 typedef struct node
 {
 	int data;
 	struct node *next;
 } NODE;
 
-// 연결리스트의 head를 전역 변수로 만들면 프로그램에 하나의 연결리스트만
-// 만들 수 밖에 없다.
-// NODE head = { 0, &head };
+void reverse(NODE* head)
+{
+	NODE *prev = head;
+	NODE *curr, *next;
+	
+	curr = prev->next;
+	while (curr != head) 
+	{
+		next = curr->next;
+		curr->next = prev;
+
+		prev = curr;
+		curr = next;
+	}
+
+	head->next = prev;
+}
+
 void insert_node(NODE* s, NODE* temp)
 {
 	temp->next = s->next;
@@ -32,8 +47,6 @@ void display(NODE* head)
 	getchar();
 }
 
-
-
 int main()
 {
 	int i;
@@ -50,6 +63,9 @@ int main()
 		insert_node(&head, nodes + i);
 		display(&head);
 	}
+
+	reverse(&head);
+	display(&head);
 
 	return 0;
 }
