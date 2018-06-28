@@ -1,6 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// 트리의 노드의 삽입 또는 삭제가 발생할 때
+// 불균형이 발생한다면, 스스로 균형잡는 알고리즘
+
+// => AVL Tree
+//   : 카운트 기반
+//    => 왼쪽 자식의 개수와 오른쪽 자식의 개수가 특정 값 이상이면
+//       불균형으로 판단한다.
+
+// => RB  Tree
+//   : 상태 머신 기반
+//    => 모든 노드는 검은색 또는 빨간색이다.
+//       부모노드와 자식 노드가 둘 다 빨간색이면 불균형이다.
+
 struct node
 {
 	int data;
@@ -32,46 +45,6 @@ void insert_data(int data)
 
 	*p = temp;
 }
-
-// 1. prev가 필요하냐?
-// 2. root가 null일 때와 아닐 때의 코드가 분리되어 있다.
-// 3. 루프 밖에서 조건 비교를 한번 더 수행한다.
-#if 0
-void insert_data(int data)
-{
-	struct node *temp;
-	struct node *p = root, *prev = NULL;
-
-	temp = (struct node *)malloc(sizeof(struct node));
-	temp->data = data;
-	temp->left = NULL;
-	temp->right = NULL;
-
-	// 첫번째 노드인 경우
-	if (root == NULL)
-	{
-		root = temp;
-		return;
-	}
-
-	// 두번째 이상부터는 
-	while (p)
-	{
-		prev = p;
-		if (p->data > data)
-			p = p->left;
-		else if (p->data < data)
-			p = p->right;
-		else
-			return;               // 이미 키가 존재한다.
-	}
-
-	if (prev->data > data)
-		prev->left = temp;
-	else 
-		prev->right = temp;
-}
-#endif
 
 void __display(struct node *temp, int (*a)[10], int *row, int *col)
 {
@@ -112,6 +85,43 @@ void display(struct node *temp)
 	getchar();
 }
 
+void __fill(struct node *temp, int *a, int *n)
+{
+	if (temp == NULL)
+		return;
+
+	__fill(temp->left, a, n);
+	a[(*n)++] = temp->data;
+	__fill(temp->right, a, n);
+}
+
+struct node*  __bal(int *a, int n)
+{
+	int mid = n / 2;
+	struct node *temp;
+
+	// 기저조건
+	if (n < 1)
+		return NULL;
+
+	temp = malloc(sizeof(struct node));
+	temp->data = a[mid];
+	temp->left = __bal(a, mid);
+	temp->right = __bal(a + mid + 1, n - mid - 1);
+
+	return temp;
+}
+
+void balance(struct node *temp)
+{
+	int a[100] = {0, };
+	int n = 0;
+
+	// 1. 배열에 트리의 모든 노드를 채운다. - 정렬된 형태
+	__fill(temp, a, &n);
+	root = __bal(a, n);
+}
+
 int main()
 {
 	int a[] = { 4, 2, 6, 1, 3, 5, 7 };
@@ -125,27 +135,9 @@ int main()
 		insert_data( i + 1 );
 		display(root);
 	}
+
+	balance(root);
+	display(root);
+
 	return 0;
 }
-
-// Hash -> 충돌 -> 연결법
-// Tree -> 사향 트리 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
