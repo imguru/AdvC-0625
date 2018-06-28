@@ -121,8 +121,8 @@ int main()
 
 	for (i = 0 ; i < 7 ; ++i)
 	{
-		// insert_data(a[i]);
-		insert_data( i + 1 );
+		insert_data(a[i]);
+		// insert_data( i + 1 );
 		display(root);
 	}
 	return 0;
