@@ -1,3 +1,4 @@
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,6 +15,46 @@ struct user
 	struct rb_node node;
 };
 
+#if 0
+static inline struct page * rb_search_page_cache(struct inode * inode,
+		unsigned long offset)
+{
+	struct rb_node * n = inode->i_rb_page_cache.rb_node;
+	struct page * page;
+
+	while (n)
+	{
+		page = rb_entry(n, struct page, rb_page_cache);
+
+		if (offset < page->offset)
+			n = n->rb_left;
+		else if (offset > page->offset)
+			n = n->rb_right;
+		else
+			return page;
+	}
+	return NULL;
+}
+#endif
+struct user *search_user(struct rb_root *root, char* name)
+{
+	struct rb_node *p = root->rb_node;
+	struct user *user;
+	
+	while (p)
+	{
+		user = rb_entry(p, struct user, node);
+		if (strcmp(name, user->name) < 0)
+			p = p->rb_left;
+		else if (strcmp(name, user->name) > 0)
+			p = p->rb_right;
+		else
+			return user;
+	}
+
+	return NULL;
+}
+
 struct user* insert_user(struct rb_root *root, struct user* data, struct rb_node* node)
 {
 	struct rb_node **p = &root->rb_node;
@@ -25,12 +66,21 @@ struct user* insert_user(struct rb_root *root, struct user* data, struct rb_node
 		parent = *p;
 		user = rb_entry(parent, struct user, node);
 
+		if (strcmp(data->name, user->name) < 0)
+			p = &(*p)->rb_left;
+		else if (strcmp(data->name, user->name) > 0)
+			p = &(*p)->rb_right;
+		else
+			return user;
+
+#if 0
 		if (data->age < user->age) 
 			p = &(*p)->rb_left;
 		else if (data->age > user->age)
 			p = &(*p)->rb_right;
 		else
 			return user;
+#endif
 	}
 
 	// 삽입 
@@ -48,7 +98,7 @@ void __display(struct rb_node *temp, struct user *(*a)[10], int *row, int *col)
 
 	++*row;
 	__display(temp->rb_left, a, row, col);
-	
+
 	user = rb_entry(temp, struct user, node);
 	user->color = rb_color(temp);
 
@@ -98,18 +148,19 @@ void display(struct rb_root *root)
 int main()
 {
 	struct user users[8] = {
-		{ .name = "Tom", .age = 5 },
-		{ .name = "Tom", .age = 6 },
-		{ .name = "Tom", .age = 7 },
-		{ .name = "Tom", .age = 8 },
-		{ .name = "Tom", .age = 9 },
-		{ .name = "Tom", .age = 10 },
-		{ .name = "Tom", .age = 11 },
-		{ .name = "Tom", .age = 12 },
+		{ .name = "손흥민", .age = 5 },
+		{ .name = "박지성", .age = 6 },
+		{ .name = "최용수", .age = 7 },
+		{ .name = "장현수", .age = 8 },
+		{ .name = "조현우", .age = 9 },
+		{ .name = "이용", .age = 10 },
+		{ .name = "홍철", .age = 11 },
+		{ .name = "기성용", .age = 12 },
 	};
 
 	struct rb_root root = { 0, };
 	int i;
+	struct user* p;
 
 	for (i = 0; i < 8; i++)
 	{
@@ -117,5 +168,25 @@ int main()
 		display(&root);
 	}
 
+	p = search_user(&root, "홍철");
+	if (p == NULL)
+	{
+		printf("찾지 못하였습니다...\n");
+	}
+	else
+	{
+		printf("%s - %d\n", p->name, p->age);
+	}
+
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
