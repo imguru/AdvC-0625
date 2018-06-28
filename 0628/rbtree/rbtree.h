@@ -97,6 +97,13 @@ return ret;
 #include <stdio.h>
 
 
+// 0x0
+// 0000 0000
+
+
+// rb_parent_color
+//  rb_parent: 부모의 포인터
+//  rb_color: RED or BLACK
 struct rb_node
 {
     unsigned long  rb_parent_color;
@@ -104,7 +111,8 @@ struct rb_node
 #define RB_BLACK        1
     struct rb_node *rb_right;
     struct rb_node *rb_left;
-};
+} __attribute__((aligned(sizeof(long))));
+// 구조체의 정렬을 long(8byte) 배수로 하겠다.
 
 struct rb_root
 {
@@ -130,7 +138,7 @@ static  void rb_set_color(struct rb_node *rb, int color)
 
 #define RB_ROOT (struct rb_root) { NULL, }
 #define rb_entry(ptr, type, member)             \
-    ((type*)((char*)ptr - (unsigned int)&((type*)0)->member))
+    ((type*)((char*)ptr - (unsigned long)&((type*)0)->member))
 
 #define RB_EMPTY_ROOT(root)     ((root)->rb_node == NULL)
 #define RB_EMPTY_NODE(node)     (rb_parent(node) == node)
